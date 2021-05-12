@@ -77,6 +77,7 @@ uint32_t mtp_op_SendObject(mtp_ctx * ctx,MTP_PACKET_HEADER * mtp_packet_hdr, int
 
 					if( check_handle_access( ctx, entry, 0x00000000, 1, &response_code) )
 					{
+                        pthread_mutex_unlock( &ctx->inotify_mutex );
 						return response_code;
 					}
 
@@ -147,7 +148,6 @@ uint32_t mtp_op_SendObject(mtp_ctx * ctx,MTP_PACKET_HEADER * mtp_packet_hdr, int
 								free( full_path );
 
 								pthread_mutex_unlock( &ctx->inotify_mutex );
-
 								return MTP_RESPONSE_NO_RESPONSE;
 							}
 
@@ -167,6 +167,7 @@ uint32_t mtp_op_SendObject(mtp_ctx * ctx,MTP_PACKET_HEADER * mtp_packet_hdr, int
 
 				if( check_handle_access( ctx, NULL, ctx->SendObjInfoHandle, 1, &response_code) )
 				{
+                    pthread_mutex_unlock( &ctx->inotify_mutex );
 					return response_code;
 				}
 
